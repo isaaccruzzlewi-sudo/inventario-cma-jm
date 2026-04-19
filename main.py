@@ -46,13 +46,14 @@ NOMBRE_ARCHIVO = "inventario.json"
 
 # CARGAR DATOS
 def cargar_datos():
-    global inventarios, precios, cantidades # <--- Agregamos cantidades
+    global inventarios, precios, cantidades, ventas_del_dia # <--- Agregamos cantidades
     if os.path.exists(NOMBRE_ARCHIVO):
         with open(NOMBRE_ARCHIVO, "r") as archivo:
             datos = json.load(archivo)
             inventarios = datos.get("nombres", [])
             precios = datos.get("precios", [])
             cantidades = datos.get("cantidades", []) # <--- Cargamos cantidades
+            ventas_del_dia = datos.get("ventas_del_dia", 0)
             print("✅ Datos cargados del cuaderno.")
     else:
         print("💡 No hay cuaderno previo, empezando desde cero.")
@@ -64,7 +65,8 @@ def guardar_datos():
     datos_a_guardar = {
         "nombres": inventarios,
         "precios": precios,
-        "cantidades": cantidades # <--- ¡IMPORTANTE! Guardar cantidades
+        "cantidades": cantidades,
+        "ventas_del_dia": ventas_del_dia
     }
     with open(NOMBRE_ARCHIVO, "w") as archivo:
         json.dump(datos_a_guardar, archivo, indent=4)
@@ -87,7 +89,7 @@ def inventario():
 
 
 
-
+print(f"Tus ventas total son: {ventas_del_dia}")
 
 
 #DECISIONES DEL MENU
@@ -148,13 +150,20 @@ while True:
 
             print(f"El producto '{nombre_nuevo}' ya existe en el inventario.")
 
-            cuantos_llegan = int(input(f"¿Cuántas unidades nuevas llegaron?: "))
+            while True:
+                try:
+                    cuantos_llegan = int(input(f"¿Cuántas unidades nuevas llegaron?: "))
 
-            # SUMAMOS a la cantidad que ya existía en esa posición
+                    # SUMAMOS a la cantidad que ya existía en esa posición
 
-            cantidades[indice] += cuantos_llegan
+                    cantidades[indice] += cuantos_llegan
 
-            print(f"✅ Stock actualizado. Ahora hay {cantidades[indice]} unidades.")
+                    print(f"✅ Stock actualizado. Ahora hay {cantidades[indice]} unidades.")
+
+                    break # SALIMOS  DEL BUCLE WHILE
+
+                except ValueError:
+                    print("Error Cantidad No Valida.")
 
 
         else:
@@ -163,21 +172,37 @@ while True:
 
             print(f"✨ '{nombre_nuevo}' es un producto nuevo para el negocio.")
 
-            precio_nuevo = float(input("Ingresa El Precio Del Articulo: "))
+            while True:
+                try:
+                    precio_nuevo = float(input("Ingresa El Precio Del Articulo: "))
+                    break  # Si llega aquí es porque el número es válido, salimos del bucle
+                except ValueError:
+                    print("❌ Eso no es un número válido, intenta de nuevo")
 
-            cantidad_inicial = int(input("¿Con cuántas unidades inicias el stock?: "))
 
-            # Agregamos a las tres listas al mismo tiempo para mantener el orden
 
-            inventarios.append(nombre_nuevo)
 
-            precios.append(precio_nuevo)
+            while True:
+                try:
+                    cantidad_inicial = int(input("¿Con cuántas unidades inicias el stock?: "))
 
-            cantidades.append(cantidad_inicial)
+                    # Agregamos a las tres listas al mismo tiempo para mantener el orden
 
-            print(f"✅ {nombre_nuevo} agregado exitosamente.")
+                    inventarios.append(nombre_nuevo)
 
-        # 4. Guardamos en el JSON para que el cambio sea físico
+                    precios.append(precio_nuevo)
+
+                    cantidades.append(cantidad_inicial)
+
+                    print(f"✅ {nombre_nuevo} agregado exitosamente.")
+
+                    break # SALIMOS DEL BUCLE WHILE
+
+                # 4. Guardamos en el JSON para que el cambio sea físico
+
+                except ValueError:
+                    print("Lo que agregaste no es valido")
+
 
         guardar_datos()
 
@@ -206,6 +231,8 @@ while True:
                 print("Ingresa El Precio De EL Articulo:")
                 precios.append(int(input("Precio: ")))
                 print("Articulo Agregado Exitosamente")
+                guardar_datos() # GUARDAMOS LOS DATOS NUEVOS
+
                 print("Inventario:\n")
                 inventario()
 
@@ -269,6 +296,8 @@ while True:
 
                         guardar_datos()
 
+
+
                     else:
 
                         print(f"🚫 No hay stock de '{vender}'.")
@@ -277,6 +306,10 @@ while True:
 
         if not encontrado:
             print(f"❌ El producto '{vender}' no existe.")
+
+
+
+
 
 
 
