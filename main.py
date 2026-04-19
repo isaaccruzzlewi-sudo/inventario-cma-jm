@@ -36,6 +36,8 @@ precios = []
 carrito = []
 cantidades = []
 ventas_del_dia = int(0)
+carrito_precios = []
+
 
 
 
@@ -101,7 +103,8 @@ def decisiones():
     print("3- Vender Articulo")
     print("4- Eliminar Inventario")
     print("5- Ver Ganancias totales")
-    print("6- Salir de la tienda\n")
+    print("6- Vender Varios Articulos")
+    print("7- Salir de la tienda\n")
 
 #LLAMAMOS A LA FUNCION PARA QUE APAREZCAN LAS DECISIONES A TOMAR
 decisiones()
@@ -387,12 +390,91 @@ while True:
 
 
 
+    # VENDER VARIOS PRODUCTOS JUNTOS
+    elif seleccion_menu == "6":
+        contador = 0 # EL CONTADOR QUE CONTARA LA CANTIDAD DE PRODUCTO QUE LLEVES PARA HACER EL BUCLE WHILE
+        cuantos__productos_venderas = int(input("Cuantos productos venderas?: ")) #CANTIDAD DE PRODUCTOS QUE QUIERE VENDER
+        print(f"Perfecto tu vas a vender: {cuantos__productos_venderas}")
+
+        while contador < cuantos__productos_venderas:
+            encontrado = False
+
+            selecciona_productos = input("Escribe un producto: ")
+
+            for articulo in range(len(inventarios)):
+                if inventarios[articulo] is not None:
+                    if inventarios[articulo].lower() == selecciona_productos.lower(): # COMPARAMOS EL PRODUCTO CON EL INVENTARIO
+                        encontrado = True #MARCAMOS PRODUCTO ENCONTRADO
+                        carrito.append(articulo)
+                        carrito_precios.append(precios[articulo])
+                        contador += 1
+                        break
+            if not encontrado:
+                print("❌ Producto no existe, intenta de nuevo")
+
+
+        #PRINTEMOS EL CARRITO LLENO YA
+        print("\n🛒 Carrito actual:")
+        for cada_productos_precios, (productos, precio) in enumerate(zip(carrito, carrito_precios), 1):
+            print(f"{cada_productos_precios}. {inventarios[productos].title()} - ${precio}")
+
+
+
+
+        total = sum(carrito_precios) #CALCULAMOS EL TOTAL DE EL CARRITO
+        print(f"Total a cobrar: ${total}")
+
+        print("------------------------------")
+
+        venta_final = input("1- Cobrar  2- Cancelar: ")
+
+
+        if venta_final not in ["1", "2"]:
+            print("Opcion invalida!")
+            break
+
+
+
+
+
+        if venta_final == "1":
+
+            for productos in carrito:
+                cantidades[productos] -= 1 #ELIMINAMOS LA CANTIDAD DE PRODUCTO
+            ventas_del_dia += total
+            carrito.clear()# LIMPIAMOS EL CARRITO NUEVAMENTE
+            carrito_precios.clear()
+            guardar_datos()
+            print(f"✅ Venta realizada por ${total}") #PRINTEAMOS EL TOTAL DE LA VENTA
+            decisiones()
+
+
+
+        if venta_final == "2": #PONEMOS UNA CONDICION SI ELIGE LA OPCION 2
+            carrito.clear()
+            carrito_precios.clear()
+            print("❌ Venta cancelada.")
+            decisiones()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
     #SI ELIGE LA OPCION 4 SALE DEL PROGRAMA Y NO SE EJECUTA MAS
-    elif seleccion_menu == "6":
+    elif seleccion_menu == "7":
         print("Gracias Por Usar Este Programa")
         guardar_datos()  # <--- ¡IMPORTANTE! Escribir antes de irse
         break
