@@ -1,0 +1,17 @@
+{
+    "nombres": [
+        "Melatonina 5mg",
+        "dragsimum",
+        "vitamina b12"
+    ],
+    "precios": [
+        1200.0,
+        4500.0,
+        1300.0
+    ],
+    "cantidades": [
+        28,
+        5,
+        3
+    ]
+}
