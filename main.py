@@ -99,7 +99,8 @@ def decisiones():
     print("1- Ver inventario")
     print("2- Agregar inventario")
     print("3- Vender Articulo")
-    print("4- Salir de la tienda\n")
+    print("4- Ver Ganancias totales")
+    print("5- Salir de la tienda\n")
 
 #LLAMAMOS A LA FUNCION PARA QUE APAREZCAN LAS DECISIONES A TOMAR
 decisiones()
@@ -311,6 +312,8 @@ while True:
 
 
 
+    elif seleccion_menu == "4":
+        print(f"Tus ventas totales son: {ventas_del_dia}") # HACER UN PRINT DE LAS VENTAS TOTALES
 
 
 
@@ -319,7 +322,7 @@ while True:
 
 
     #SI ELIGE LA OPCION 4 SALE DEL PROGRAMA Y NO SE EJECUTA MAS
-    elif seleccion_menu == "4":
+    elif seleccion_menu == "5":
         print("Gracias Por Usar Este Programa")
         guardar_datos()  # <--- ¡IMPORTANTE! Escribir antes de irse
         break
