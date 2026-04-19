@@ -99,8 +99,9 @@ def decisiones():
     print("1- Ver inventario")
     print("2- Agregar inventario")
     print("3- Vender Articulo")
-    print("4- Ver Ganancias totales")
-    print("5- Salir de la tienda\n")
+    print("4- Eliminar Inventario")
+    print("5- Ver Ganancias totales")
+    print("6- Salir de la tienda\n")
 
 #LLAMAMOS A LA FUNCION PARA QUE APAREZCAN LAS DECISIONES A TOMAR
 decisiones()
@@ -313,6 +314,29 @@ while True:
 
 
     elif seleccion_menu == "4":
+        eliminar = input("Cual es el producto que quieres eliminar?: ").lower()
+        encontrado = False # DECLARAMOS FALSA PORQUE AUN NO HEMOS COMPARADO
+        for articulo in range(len(inventarios)): # POR CADA ARTICULO EN UN RANGO DE LA LONGITUD DE INVENTARIO
+            if inventarios[articulo] is not None: # ENTONCES SI INVENTARIO  Y ARTICULO NO ESTAN VACIOS
+                if inventarios[articulo].lower() == eliminar: # ENTONCES SI NO ESTA VACIO SI INVENTARIO Y EL ARTICULO EN MINUSCULA ES IGUAL A ELIMINAR AL INPUT
+                    inventarios.pop(articulo) # BORRAMOS TODO QUE TENGA QUE VER CON EL ARTICULO
+                    precios.pop(articulo)
+                    cantidades.pop(articulo)
+                    encontrado = True # DECLARAMOS EL ARTICULO ENCONTRADO
+                    print(f"✅ Producto eliminado exitosamente.")
+                    guardar_datos() # GUARDAMOS LOS DATOS DE NUEVO
+                    break # SALIMOS
+
+        if not encontrado:
+            print(f"❌ El producto '{eliminar}' no existe.")
+
+
+
+
+
+
+
+    elif seleccion_menu == "5":
         print(f"Tus ventas totales son: {ventas_del_dia}") # HACER UN PRINT DE LAS VENTAS TOTALES
 
 
@@ -322,7 +346,7 @@ while True:
 
 
     #SI ELIGE LA OPCION 4 SALE DEL PROGRAMA Y NO SE EJECUTA MAS
-    elif seleccion_menu == "5":
+    elif seleccion_menu == "6":
         print("Gracias Por Usar Este Programa")
         guardar_datos()  # <--- ¡IMPORTANTE! Escribir antes de irse
         break
