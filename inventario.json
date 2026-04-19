@@ -1,24 +1,18 @@
 {
     "nombres": [
         "dragsimum",
-        "vitamina b12",
         "melatonina 5mg",
-        "melatonina 15mg",
-        "vitaminabuena"
+        "melatonina 15mg"
     ],
     "precios": [
         4500.0,
-        1300.0,
         1200.0,
-        1500.0,
-        1200.0
+        1500.0
     ],
     "cantidades": [
-        5,
         3,
         5,
-        3,
-        0
+        3
     ],
-    "ventas_del_dia": 1200
+    "ventas_del_dia": 14760.0
 }

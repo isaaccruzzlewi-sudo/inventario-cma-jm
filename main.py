@@ -107,6 +107,9 @@ def decisiones():
 decisiones()
 
 
+def decisiones_internas():
+    print("1- Eliminar una cantidad")
+    print("2- Eliminarlo todo")
 
 
 
@@ -314,21 +317,64 @@ while True:
 
 
     elif seleccion_menu == "4":
-        eliminar = input("Cual es el producto que quieres eliminar?: ").lower()
-        encontrado = False # DECLARAMOS FALSA PORQUE AUN NO HEMOS COMPARADO
-        for articulo in range(len(inventarios)): # POR CADA ARTICULO EN UN RANGO DE LA LONGITUD DE INVENTARIO
-            if inventarios[articulo] is not None: # ENTONCES SI INVENTARIO  Y ARTICULO NO ESTAN VACIOS
-                if inventarios[articulo].lower() == eliminar: # ENTONCES SI NO ESTA VACIO SI INVENTARIO Y EL ARTICULO EN MINUSCULA ES IGUAL A ELIMINAR AL INPUT
-                    inventarios.pop(articulo) # BORRAMOS TODO QUE TENGA QUE VER CON EL ARTICULO
-                    precios.pop(articulo)
-                    cantidades.pop(articulo)
-                    encontrado = True # DECLARAMOS EL ARTICULO ENCONTRADO
-                    print(f"✅ Producto eliminado exitosamente.")
-                    guardar_datos() # GUARDAMOS LOS DATOS DE NUEVO
-                    break # SALIMOS
+        producto_eliminar = input("Cual es el producto que quieres eliminar?: ").lower()
 
-        if not encontrado:
-            print(f"❌ El producto '{eliminar}' no existe.")
+
+        decisiones_internas() #LLAMAMOS ESTA FUNCION LO CUAL LE PIDE AL USUARIO QUE ELIJA UNA OPCION
+
+
+        elige_opcion_eliminar = input("Elige una opcion?: ")
+
+        while True:
+            if elige_opcion_eliminar not in ["1", "2"]: #HACEMOS UN WHILE PARA COMPARAR DE QUE NOV AYA A PONER ALGO DIFERENTE
+                elige_opcion_eliminar = input("Elige una opcion?: ")
+            else:
+                break
+
+
+
+        try:
+            if elige_opcion_eliminar == "1":
+                cantidad_eliminar = int(input("Cual es la cantidad que quieres eliminar?: "))
+
+                encontrado = False
+                for articulo in range(len(inventarios)): # POR CADA ARTICULO EN UN RANGO DEL TAMANO DE INVENTARIOS
+                    if inventarios[articulo] is not None: # SI INVENTARIOS Y ARTICULO NOE ESTA VACIO ESA CAJA
+                        if inventarios[articulo].lower() == producto_eliminar: # SI INEVNATIO ARTICULO ES IGUAL A AL PRODUCTO QUE QUIERE ELIMINAR EN MINUSCULA
+                            encontrado = True # ENTONCES ENCONTRADO ES TRUE
+                            if cantidad_eliminar > cantidades[articulo]:
+                                print("No puedes eliminar mas de cantidad de la que tienes")
+                                decisiones()
+                                break
+                            cantidades[articulo] -= cantidad_eliminar # RESTAR LA CANTIDAD QUE DESEAMOS ELIMINAR
+                            guardar_datos()
+                            print(f"✅ Quitadas {cantidad_eliminar} unidades.")# PRINTEAMOS LA CANTIDAD QUE ELIMINAMOS
+                            decisiones()
+                            break
+        except ValueError:
+            print("El producto no existe")
+            decisiones()
+
+
+
+        try:
+            if elige_opcion_eliminar == "2": # SI ELIGE ESTA OPCION ENTONCES
+                encontrado = False # DECLARAR FALSO QUE ESTA ENCONTRADO PORQUE AUN NO HEMOS ENCONTRADO
+                for articulo in range(len(inventarios)):
+                    if inventarios[articulo] is not None:
+                        if inventarios[articulo].lower() == producto_eliminar: # COMPARAMOS SI ES EL MISMO PRODUCTO
+                            encontrado = True # YA AQUI DECLARAMOS EL TRUE PORQUE YA ENCONTRO
+                            inventarios.pop(articulo) # ELIMINAREMOS TODO EL ARTICULO
+                            precios.pop(articulo)
+                            cantidades.pop(articulo)
+                            guardar_datos()
+                            print("Articulo Eliminado Exitosamente")
+                            decisiones()
+                            break
+        except ValueError:
+            print("El producto no existe")
+            decisiones()
+
 
 
 
